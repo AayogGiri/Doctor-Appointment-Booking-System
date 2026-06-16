@@ -1,0 +1,42 @@
+{% extends 'GFG.html' %}
+{% block content %}
+
+<h2>Doctor Profile Management</h2>
+
+<p>
+    Logged in as:
+    <b>Dr. {{ request.user.first_name }} {{ request.user.last_name }}</b>
+</p>
+
+<hr>
+
+{% for message in messages %}
+<p class="success">{{ message }}</p>
+{% endfor %}
+
+<form method="post" enctype="multipart/form-data">
+{% csrf_token %}
+
+{{ form.as_p }}
+
+<button type="submit">Save Information</button>
+
+</form>
+
+<hr>
+
+<h3>Profile Information</h3>
+
+<ul>
+    <li>✔ Update Personal Details</li>
+    <li>✔ Upload Profile Picture</li>
+    <li>✔ Manage Specialization</li>
+    <li>✔ Update Contact Information</li>
+    <li>✔ Visible on Home Page for Patients</li>
+</ul>
+
+<p>
+    Keep your profile updated so patients can easily find and book appointments with you.
+</p>
+
+{% endblock %}

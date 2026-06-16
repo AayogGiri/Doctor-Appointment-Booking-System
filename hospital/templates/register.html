@@ -1,0 +1,52 @@
+{% extends 'GFG.html' %}
+
+{% block content %}
+
+<h2>Create Your Account</h2>
+<p>Register as a Patient to book doctor appointments online.</p>
+
+<hr>
+
+{% for message in messages %}
+<p class="{{ message.tags }}">{{ message }}</p>
+{% endfor %}
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>First Name</label>
+    {{ form.first_name }}
+
+    <label>Last Name</label>
+    {{ form.last_name }}
+
+    <label>Username</label>
+    {{ form.username }}
+
+    <label>Email</label>
+    {{ form.email }}
+
+    <label>Password</label>
+    {{ form.password1 }}
+
+    <label>Confirm Password</label>
+    {{ form.password2 }}
+
+    <button type="submit">Register</button>
+</form>
+
+<hr>
+
+<p>
+    Already have an account?
+    <a href="{% url 'login' %}">Login here</a>
+</p>
+
+<ul>
+    <li>✔ Secure account creation</li>
+    <li>✔ Name stored during registration</li>
+    <li>✔ Email-based login system</li>
+    <li>✔ Easy appointment booking access</li>
+</ul>
+
+{% endblock %}

@@ -1,0 +1,163 @@
+{% extends 'GFG.html' %}
+{% block content %}
+
+<style>
+    .patient-topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 24px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid #e8edf2;
+    }
+
+    .patient-topbar h2 {
+        margin: 0;
+        font-size: 22px;
+    }
+
+    .patient-topbar .topbar-right {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .patient-topbar .user-tag {
+        font-size: 13px;
+        color: #64748b;
+    }
+
+    .btn-dashboard {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        background: linear-gradient(135deg, #2c3e50, #3498db);
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 9px 18px;
+        border-radius: 8px;
+        text-decoration: none;
+        box-shadow: 0 3px 10px rgba(52, 152, 219, 0.25);
+        transition: transform .15s, box-shadow .15s;
+    }
+
+    .btn-dashboard:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(52, 152, 219, 0.35);
+        color: #fff;
+        text-decoration: none;
+    }
+</style>
+
+<div class="patient-topbar">
+    <h2>📅 Book Appointment</h2>
+    <div class="topbar-right">
+        <span class="user-tag">👤 {{ request.user.first_name }} {{ request.user.last_name }}</span>
+        <a href="{% url 'patient_dashboard' %}" class="btn-dashboard" id="link-my-appointments">
+            🗂 My Appointments
+        </a>
+    </div>
+</div>
+
+<hr>
+
+{% for message in messages %}
+<p style="color:red;">{{ message }}</p>
+{% endfor %}
+
+{% if selected_doctor %}
+<form method="post">
+    {% csrf_token %}
+    {% endif %}
+
+    {% if selected_doctor %}
+
+    <input type="hidden" name="doctor_id" value="{{ selected_doctor.id }}">
+
+    <h3>
+        Dr. {{ selected_doctor.first_name }}
+        {{ selected_doctor.last_name }}
+    </h3>
+
+    {% else %}
+
+    <label><strong>Select Doctor</strong></label>
+
+    <select name="doctor_id" required onchange="location='?doctor='+this.value">
+        <option value="">Choose Doctor</option>
+
+        {% for d in doctor %}
+        <option value="{{ d.doctor.id }}">
+            Dr. {{ d.first_name }} {{ d.last_name }}
+            - {{ d.specialist_in }}
+        </option>
+        {% endfor %}
+    </select>
+
+    {% endif %}
+
+    <br><br>
+
+    <label>Reason</label>
+    <input type="text" name="reason" required>
+
+    <br><br>
+
+    <label>Symptoms</label>
+    <textarea name="symptoms" rows="3"></textarea>
+
+    <br><br>
+
+    <label>Mobile Number</label>
+    <input type="text" name="mobile_number" pattern="[0-9]{10}" title="Please enter a valid 10-digit mobile number"
+        required>
+
+    <br><br>
+
+    <label><strong>Your Age</strong></label>
+    <input type="number" name="age" min="0" max="120" value="30" required style="width:80px;">
+
+    <br><br>
+
+    <label><strong>Emergency Level</strong></label><br>
+    <select name="emergency_level" id="emergency_level" required
+        style="padding:6px 12px; border-radius:6px; border:1px solid #ccc; font-size:14px;">
+        <option value="1">🟢 Normal — Routine visit</option>
+        <option value="2">🟡 Urgent — Needs prompt attention</option>
+        <option value="3">🔴 Critical — Immediate care required</option>
+    </select>
+
+    <br><br>
+
+    {% if schedules %}
+
+    <h3>Available Time Slots</h3>
+
+    {% for s in schedules %}
+    <label style="display:block; margin:8px 0;">
+        <input type="radio" name="schedule" value="{{ s.id }}" required {% if request.GET.schedule == s.id|stringformat:"s" %}checked{% endif %}>
+
+        {{ s.date }} |
+        {{ s.start_time }} - {{ s.end_time }}
+    </label>
+    {% endfor %}
+
+    {% else %}
+
+    {% if selected_doctor %}
+    <p>No available schedules for this doctor.</p>
+    {% endif %}
+
+    {% endif %}
+
+    <br>
+
+    {% if selected_doctor %}
+    <button type="submit">Book Appointment</button>
+</form>
+{% endif %}
+
+{% endblock %}

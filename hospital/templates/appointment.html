@@ -1,0 +1,195 @@
+{% extends 'GFG.html' %}
+{% block content %}
+
+<h2>Doctor Dashboard - Appointments</h2>
+
+<p>Logged in as: <b>{{ request.user }}</b></p>
+
+<hr>
+
+<!-- =========================
+     PENDING APPOINTMENTS
+========================= -->
+<!-- <h3>Pending Appointments</h3>
+
+<form method="post">
+{% csrf_token %}
+
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Patient</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Reason</th>
+        <th>Symptoms</th>
+        <th>Email</th>
+        <th>Action</th>
+    </tr>
+
+    {% for p in patient %}
+    <tr>
+        <td>{{ p.first_name }} {{ p.last_name }}</td>
+        <td>{{ p.appointment_date }}</td>
+        <td>{{ p.appointment_time|default:"Not Set" }}</td>
+        <td>{{ p.reason }}</td>
+        <td>{{ p.symptoms }}</td>
+        <td>{{ p.email_id }}</td>
+
+        <td>
+            <button type="submit" name="accept" value="{{ p.user_name }}">
+                Accept
+            </button>
+
+            <button type="submit" name="reject" value="{{ p.user_name }}"
+                    style="background:red; color:white;">
+                Reject
+            </button>
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="7">No pending appointments</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</form>
+
+<hr> -->
+
+<!-- =========================
+     SCHEDULED APPOINTMENTS
+========================= -->
+<h3>Scheduled Appointments
+    <small style="font-size:13px; font-weight:normal; color:#666;">
+        — sorted by priority (highest first)
+    </small>
+</h3>
+
+<style>
+    .appt-table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .appt-table th {
+        background: #2c3e50;
+        color: #fff;
+        padding: 10px 14px;
+        text-align: left;
+    }
+
+    .appt-table td {
+        padding: 9px 14px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .appt-table tr:hover td {
+        background: #f0f4ff;
+    }
+
+    /* Row highlight by emergency level */
+    .row-critical td {
+        background: #fff0f0;
+        border-left: 4px solid #e74c3c;
+    }
+
+    .row-urgent td {
+        background: #fffbf0;
+        border-left: 4px solid #f39c12;
+    }
+
+    .row-normal td {
+        background: #f9fff9;
+        border-left: 4px solid #27ae60;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .badge-critical {
+        background: #fde8e8;
+        color: #c0392b;
+    }
+
+    .badge-urgent {
+        background: #fef9e7;
+        color: #d68910;
+    }
+
+    .badge-normal {
+        background: #eafaf1;
+        color: #1e8449;
+    }
+
+    .score-pill {
+        display: inline-block;
+        min-width: 50px;
+        text-align: center;
+        padding: 3px 8px;
+        border-radius: 20px;
+        background: #2c3e50;
+        color: #fff;
+        font-weight: 700;
+        font-size: 13px;
+    }
+</style>
+
+<table class="appt-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Priority</th>
+            <th>Emergency</th>
+            <th>Patient</th>
+            <th>Age</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Reason</th>
+            <th>Contact</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in scheduled %}
+        {% if s.emergency_level == 3 %}
+        <tr class="row-critical">
+            {% elif s.emergency_level == 2 %}
+        <tr class="row-urgent">
+            {% else %}
+        <tr class="row-normal">
+            {% endif %}
+            <td>{{ forloop.counter }}</td>
+            <td><span class="score-pill">{{ s.live_priority }}</span></td>
+            <td>
+                {% if s.emergency_level == 3 %}
+                <span class="badge badge-critical">🔴 Critical</span>
+                {% elif s.emergency_level == 2 %}
+                <span class="badge badge-urgent">🟡 Urgent</span>
+                {% else %}
+                <span class="badge badge-normal">🟢 Normal</span>
+                {% endif %}
+            </td>
+            <td><strong>{{ s.patient }}</strong></td>
+            <td>{{ s.age }}</td>
+            <td>{{ s.date }}</td>
+            <td>{{ s.time }}</td>
+            <td>{{ s.reason }}</td>
+            <td>{{ s.mobile_number }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="9" style="text-align:center; color:#888; padding:20px;">
+                No scheduled appointments yet.
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

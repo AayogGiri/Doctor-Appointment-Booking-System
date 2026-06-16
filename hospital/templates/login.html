@@ -1,0 +1,42 @@
+{% extends 'GFG.html' %}
+{% block content %}
+
+<h2>Login to DABS</h2>
+<p>Access your account to manage appointments and healthcare services.</p>
+
+<hr>
+
+{% for message in messages %}
+<p class="{{ message.tags }}">{{ message }}</p>
+{% endfor %}
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>Email Address</label>
+    <input type="email" name="email" placeholder="Enter your registered email" required>
+
+    <label>Password</label>
+    <input type="password" name="password" placeholder="Enter your password" required>
+
+    <button type="submit">Login</button>
+
+</form>
+
+<hr>
+
+<p>
+    New user?
+    <a href="{% url 'register' %}">
+        Create an Account
+    </a>
+</p>
+
+<ul>
+    <li>✔ Patient Login</li>
+    <li>✔ Doctor Login</li>
+    <li>✔ Secure Authentication</li>
+    <li>✔ Role-Based Dashboard Access</li>
+</ul>
+
+{% endblock %}

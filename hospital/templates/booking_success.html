@@ -1,0 +1,323 @@
+{% extends 'GFG.html' %}
+{% block content %}
+
+<style>
+  /* ── Page wrapper ───────────────────────────────────── */
+  .success-wrapper {
+    max-width: 700px;
+    margin: 40px auto;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+  }
+
+  /* ── Top banner ─────────────────────────────────────── */
+  .success-banner {
+    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+    border-radius: 16px 16px 0 0;
+    padding: 36px 32px 28px;
+    text-align: center;
+    color: #fff;
+  }
+
+  .success-banner .check-icon {
+    font-size: 52px;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+
+  .success-banner h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 6px;
+  }
+
+  .success-banner p {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.78);
+    margin: 0;
+  }
+
+  /* ── Card body ──────────────────────────────────────── */
+  .success-card {
+    background: #fff;
+    border: 1px solid #e8edf2;
+    border-top: none;
+    border-radius: 0 0 16px 16px;
+    padding: 32px;
+    box-shadow: 0 8px 32px rgba(44, 62, 80, 0.08);
+  }
+
+  /* ── Booking ref ────────────────────────────────────── */
+  .booking-ref {
+    text-align: center;
+    font-size: 13px;
+    color: #95a5a6;
+    margin-bottom: 20px;
+  }
+
+  .booking-ref b {
+    color: #2c3e50;
+    font-size: 15px;
+  }
+
+  /* ── Emergency badge ────────────────────────────────── */
+  .emg-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  .emg-critical {
+    background: #fde8e8;
+    color: #c0392b;
+    border: 1.5px solid #e74c3c;
+  }
+
+  .emg-urgent {
+    background: #fef9e7;
+    color: #d68910;
+    border: 1.5px solid #f39c12;
+  }
+
+  .emg-normal {
+    background: #eafaf1;
+    color: #1e8449;
+    border: 1.5px solid #27ae60;
+  }
+
+  /* ── Section headings ───────────────────────────────── */
+  .section-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #95a5a6;
+    margin: 24px 0 10px;
+  }
+
+  /* ── Detail grid ────────────────────────────────────── */
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid #ecf0f1;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .detail-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid #ecf0f1;
+  }
+
+  .detail-item:nth-child(odd) {
+    border-right: 1px solid #ecf0f1;
+  }
+
+  .detail-item:nth-last-child(-n+2) {
+    border-bottom: none;
+  }
+
+  .detail-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #95a5a6;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 3px;
+  }
+
+  .detail-value {
+    font-size: 14px;
+    color: #2c3e50;
+    font-weight: 500;
+  }
+
+  /* ── Priority pill ──────────────────────────────────── */
+  .priority-pill {
+    display: inline-block;
+    background: #2c3e50;
+    color: #fff;
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  /* ── Action buttons ─────────────────────────────────── */
+  .actions {
+    display: flex;
+    gap: 14px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+  }
+
+  .btn-download {
+    flex: 1;
+    min-width: 200px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #2c3e50, #3498db);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 14px 28px;
+    border-radius: 10px;
+    text-decoration: none;
+    box-shadow: 0 4px 16px rgba(52, 152, 219, 0.30);
+    transition: transform .15s, box-shadow .15s;
+  }
+
+  .btn-download:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(52, 152, 219, 0.40);
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .btn-secondary {
+    flex: 1;
+    min-width: 160px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #f4f6f8;
+    color: #2c3e50;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 14px 24px;
+    border-radius: 10px;
+    text-decoration: none;
+    border: 1.5px solid #e0e6ec;
+    transition: background .15s;
+  }
+
+  .btn-secondary:hover {
+    background: #e8edf2;
+    text-decoration: none;
+    color: #2c3e50;
+  }
+
+  /* ── Divider ────────────────────────────────────────── */
+  .divider {
+    border: none;
+    border-top: 1px solid #ecf0f1;
+    margin: 20px 0;
+  }
+</style>
+
+<div class="success-wrapper">
+
+  <!-- Banner -->
+  <div class="success-banner">
+    <div class="check-icon">✅</div>
+    <h1>Appointment Confirmed!</h1>
+    <p>Your booking has been successfully placed. Keep this page or download the PDF for your records.</p>
+  </div>
+
+  <!-- Card -->
+  <div class="success-card">
+
+    <!-- Booking reference -->
+    <div class="booking-ref">
+      Booking Reference: <b>#APT-{{ appt.pk|stringformat:"05d" }}</b>
+    </div>
+
+    <!-- Emergency badge -->
+    <div style="text-align:center;">
+      {% if appt.emergency_level == 3 %}
+      <span class="emg-badge emg-critical">🔴 Critical — Immediate care required</span>
+      {% elif appt.emergency_level == 2 %}
+      <span class="emg-badge emg-urgent">🟡 Urgent — Needs prompt attention</span>
+      {% else %}
+      <span class="emg-badge emg-normal">🟢 Normal — Routine visit</span>
+      {% endif %}
+    </div>
+
+    <hr class="divider">
+
+    <!-- Patient section -->
+    <div class="section-title">Patient Information</div>
+    <div class="detail-grid">
+      <div class="detail-item">
+        <div class="detail-label">Full Name</div>
+        <div class="detail-value">{{ request.user.first_name }} {{ request.user.last_name }}</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Age</div>
+        <div class="detail-value">{{ appt.age }} years</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Email</div>
+        <div class="detail-value">{{ appt.email_id }}</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Mobile</div>
+        <div class="detail-value">{{ appt.mobile_number }}</div>
+      </div>
+    </div>
+
+    <!-- Doctor section -->
+    <div class="section-title">Doctor & Appointment</div>
+    <div class="detail-grid">
+      {% if doctor_info %}
+      <div class="detail-item">
+        <div class="detail-label">Doctor</div>
+        <div class="detail-value">Dr. {{ doctor_info.first_name }} {{ doctor_info.last_name }}</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Specialisation</div>
+        <div class="detail-value">{{ doctor_info.specialist_in }}</div>
+      </div>
+      {% endif %}
+      <div class="detail-item">
+        <div class="detail-label">Date</div>
+        <div class="detail-value">{{ appt.date }}</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Time</div>
+        <div class="detail-value">{{ appt.time }}</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Reason</div>
+        <div class="detail-value">{{ appt.reason }}</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Symptoms</div>
+        <div class="detail-value">{{ appt.symptoms|default:"—" }}</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Priority Score</div>
+        <div class="detail-value"><span class="priority-pill">{{ appt.live_priority }}</span></div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Booked On</div>
+        <div class="detail-value">{{ appt.booked_at|date:"d M Y, g:i A" }}</div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="actions">
+      <a href="{% url 'download_appointment_pdf' appt.pk %}" class="btn-download" id="btn-download-pdf">
+        ⬇ Download Appointment PDF
+      </a>
+      <a href="{% url 'patient_dashboard' %}" class="btn-secondary" id="btn-my-appts">
+        🗂 My Appointments
+      </a>
+      <a href="{% url 'patient' %}" class="btn-secondary">
+        ← Book Another
+      </a>
+    </div>
+
+
+  </div><!-- /success-card -->
+</div><!-- /success-wrapper -->
+
+{% endblock %}

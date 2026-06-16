@@ -1,0 +1,66 @@
+{% extends 'GFG.html' %}
+{% block content %}
+
+<h2>Doctor Profile</h2>
+
+<div style="display:flex; gap:30px;">
+
+    <div>
+        {% if doctor.profile_pic %}
+        <img src="{{ doctor.profile_pic.url }}" width="220" style="border-radius:10px;">
+        {% endif %}
+    </div>
+
+    <div>
+        <h2>Dr. {{ doctor.first_name }} {{ doctor.last_name }}</h2>
+
+        <p><b>Specialization:</b> {{ doctor.specialist_in }}</p>
+        
+        {% if doctor.profile_description %}
+        <p><b>Description:</b> {{ doctor.profile_description }}</p>
+        {% endif %}
+
+        <p><b>Address:</b> {{ doctor.address }}</p>
+
+        <p><b>City:</b> {{ doctor.city }}</p>
+
+        <p><b>Email:</b> {{ doctor.email }}</p>
+
+        <p><b>Phone:</b> {{ doctor.mobile_number }}</p>
+    </div>
+
+</div>
+
+<hr>
+
+<h3>Available Time Slots</h3>
+
+<form method="get" action="{% url 'patient' %}">
+    <input type="hidden" name="doctor" value="{{ doctor.doctor.id }}">
+
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Select</th>
+        </tr>
+
+        {% for s in schedules %}
+        <tr>
+            <td>{{ s.date }}</td>
+            <td>{{ s.start_time }} - {{ s.end_time }}</td>
+            <td>
+                <input type="radio" name="schedule" value="{{ s.id }}" required>
+            </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    <br>
+
+    <button type="submit">Proceed to Booking</button>
+
+</form>
+
+{% endblock %}

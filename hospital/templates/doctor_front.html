@@ -1,0 +1,82 @@
+{% extends 'GFG.html' %}
+{% block content %}
+
+<h2>Doctor Dashboard</h2>
+
+<p>Welcome, <b>Dr. {{ request.user.username }}</b></p>
+
+<hr>
+
+<!-- =========================
+     QUICK ACTION CARDS
+========================= -->
+<div style="display:flex; gap:20px; margin-top:20px;">
+
+    <!-- Appointments -->
+    <div style="border:1px solid #ccc; padding:15px; width:200px;">
+        <h4>Appointments</h4>
+        <p>View pending & scheduled appointments</p>
+        <a href="{% url 'appointment' %}">
+            <button>Open</button>
+        </a>
+    </div>
+
+    <!-- Profile -->
+    <div style="border:1px solid #ccc; padding:15px; width:200px;">
+        <h4>Profile</h4>
+        <p>Update doctor information</p>
+        <a href="{% url 'doctor' %}">
+            <button>Update</button>
+        </a>
+    </div>
+
+    <!-- Schedule -->
+    <div style="border:1px solid #ccc; padding:15px; width:200px;">
+        <h4>Schedule</h4>
+        <p>Manage your availability</p>
+        <a href="{% url 'schedule' %}">
+            <button>Manage</button>
+        </a>
+    </div>
+
+</div>
+
+<hr>
+
+<!-- =========================
+     QUICK LINKS
+========================= -->
+<h3>Quick Actions</h3>
+
+<ul>
+    <li>
+        <a href="{% url 'appointment' %}">📅 Manage Appointments</a>
+    </li>
+
+    <li>
+        <a href="{% url 'doctor' %}">👨‍⚕️ Edit Profile</a>
+    </li>
+
+    <li>
+        <a href="{% url 'schedule' %}">🕒 Manage Schedule</a>
+    </li>
+
+    <li>
+        <a href="{% url 'home' %}">🏠 Go to Home</a>
+    </li>
+</ul>
+
+<hr>
+
+<!-- =========================
+     INFO SECTION
+========================= -->
+<h3>System Overview</h3>
+
+<p>
+    This dashboard allows doctors to manage patient appointments, review booking requests,
+    and maintain their professional profile. Appointment scheduling is based on available
+    time slots to ensure efficient and conflict-free consultation management.
+</p>
+
+{% endblock %}
